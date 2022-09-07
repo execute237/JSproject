@@ -16,7 +16,7 @@ let personalMovieDB = {
     movies: {},
     actors: {},
     genres:[],
-    private: false
+    private: false  
 };
 
 function rememberMyFilms () {
@@ -53,4 +53,15 @@ function detectPersonalLevel () {
 
 detectPersonalLevel ();
 
-console.log (personalMovieDB);
+function showMyDB () {
+    if (personalMovieDB.private === false) {
+        console.log (personalMovieDB);
+    }
+}
+
+function writeYourGenres () {
+    for (let i = 1; i <= 3; i++) {
+        let genre = prompt (`Ваш любимый жанр под номером ${i}` , '');
+        personalMovieDB.genres[i-1] = genre;
+    }
+}
