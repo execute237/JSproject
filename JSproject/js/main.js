@@ -1,67 +1,83 @@
 "use strict";
-let numberOfFilms;
-
-function start () {
-    numberOfFilms = +prompt('Сколько фильмов вы уже посомтрели ?', '');
-
-    while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)) {
-        numberOfFilms = +prompt('Сколько фильмов вы уже посомтрели ?', '');
-    }
-}
-
-start ();
 
 let personalMovieDB = {
-    count: numberOfFilms,
+    count: 0,
     movies: {},
     actors: {},
     genres:[],
-    private: false  
-};
+    private: false,
 
-function rememberMyFilms () {
-    for (let i = 0; i < 2; i++){
-        const lastFilms = prompt('Один из просмотренных фильмов?', ''),
-              ratingFilms = +prompt ('На сколько оцените его?','');
-        
-        if (lastFilms != '' && ratingFilms != '' && 
-        lastFilms.length < 50 && lastFilms != null && ratingFilms != null) {
+    start () {
+        personalMovieDB.count = +prompt('Сколько фильмов вы уже посомтрели ?', '').trim();
+    
+        while (personalMovieDB.count == '' || personalMovieDB.count == null || isNaN(personalMovieDB.count)) {
+            personalMovieDB.count = +prompt('Сколько фильмов вы уже посомтрели ?', '').trim();
+        }
+    },
+
+    rememberMyFilms : function() {
+        for (let i = 0; i < 2; i++){
+            const lastFilms = prompt('Один из просмотренных фильмов?', '').trim(),
+                  ratingFilms = +prompt ('На сколько оцените его?','').trim();
             
-            personalMovieDB.movies[lastFilms] = ratingFilms;
-            console.log ('done');
+            if (lastFilms != '' && ratingFilms != '' && 
+            lastFilms.length < 50 && lastFilms != null && ratingFilms != null) {
+                
+                personalMovieDB.movies[lastFilms] = ratingFilms;
+                console.log ('done');
+            } else {
+                console.log ('error');
+                i--;
+            }      
+        }
+    },
+
+    detectPersonalLevel : function () {
+        if ( personalMovieDB.count < 10) {
+            console.log ('Просмотренно мало фильмов');
+        } else if ( personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
+            console.log ('Вы классический зритель');
+        } else if ( personalMovieDB.count >= 30) {
+            console.log ('Вы киноман !');
         } else {
             console.log ('error');
-            i--;
         }
-    
+    },
+
+    showMyDB : function () {
+        if (personalMovieDB.private === false) {
+            console.log (personalMovieDB);
+        }
+    },
+
+    toggleVisibleMyDB : function () {
+        if (personalMovieDB.private){
+            personalMovieDB.private = false;
+        } else {
+            personalMovieDB.private = true;
+        }
+    },
+
+    writeYourGenres : function () {
+        for (let i = 1; i <= 3; i++) {
+            let genre = prompt (`Ваш любимый жанр под номером ${i}` , '');
+            if (genre === '' || genre === null){
+                i--;
+            }
+            personalMovieDB.genres[i - 1] = genre;
+        }
+        personalMovieDB.genres.forEach((item, i) => {
+            console.log (`Любимый жанр ${i + 1} - это ${item}`);
+        });
     }
-}
+};
 
-rememberMyFilms ();
+/* personalMovieDB.start ();
 
-function detectPersonalLevel () {
-    if ( personalMovieDB.count < 10) {
-        console.log ('Просмотренно мало фильмов');
-    } else if ( personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
-        console.log ('Вы классический зритель');
-    } else if ( personalMovieDB.count >= 30) {
-        console.log ('Вы киноман !');
-    } else {
-        console.log ('error');
-    }
-}
+personalMovieDB.rememberMyFilms ();
 
-detectPersonalLevel ();
+personalMovieDB.detectPersonalLevel ();
 
-function showMyDB () {
-    if (personalMovieDB.private === false) {
-        console.log (personalMovieDB);
-    }
-}
+personalMovieDB.showMyDB ();
 
-function writeYourGenres () {
-    for (let i = 1; i <= 3; i++) {
-        let genre = prompt (`Ваш любимый жанр под номером ${i}` , '');
-        personalMovieDB.genres[i-1] = genre;
-    }
-}
+personalMovieDB.writeYourGenres (); */
